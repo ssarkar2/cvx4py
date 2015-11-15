@@ -12,13 +12,17 @@ class cvx4py(object):
         self.cvxProgramString += '\n'
         self.locals = locals
 
+
+
+    def parse(self):
+        self.parserObj = cvxParser()  #create a parser class and hen call the aprse function on it.
+        #self.parserObj.parse(self.cvxProgramString)
+        self.parserObj.parse('1+2')
+
     def solve(self):
         print "solving..."
         print self.cvxProgramString
-        self.parserObj = cvxParser()  #create a parser class and hen call the aprse function on it.
-        self.parserObj.parse(self.cvxProgramString)
-
-
+        self.program = self.parse()
 
 
 

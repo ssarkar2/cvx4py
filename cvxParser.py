@@ -1,6 +1,6 @@
 from cvxLexer import cvxLexer
 from ply import yacc
-#from . ast.expressions import Number, Parameter, Variable #, Sum, Transpose
+from . ast.expressions import Number, Parameter, Variable #, Sum, Transpose
 #import ast
 #http://www.google.com/url?q=http%3A%2F%2Fcvxr.com%2Fcvx%2Fdoc%2Ffuncref.html&sa=D&sntz=1&usg=AFQjCNEskkaqwhUSwDLxA59azIaw2jSIyQ
 class cvxParser(object):
@@ -20,9 +20,7 @@ class cvxParser(object):
 
 
     def parse(self, cvxProgramString):
-
-        pass
-        #return self.parserObj.parse(cvxProgramString)  #uncomment once parser is implemented
+        return self.parserObj.parse(cvxProgramString)  #uncomment once parser is implemented
 
 
     #implement a bunch of functions required for parser here
