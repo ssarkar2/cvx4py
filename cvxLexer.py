@@ -52,12 +52,12 @@ class cvxLexer(object):
         return t
 
     #keep defination of FLOAT above that of INT (precedence)
-    def t_FLOAT(t):
+    def t_FLOAT(self, t):
         r'(\d*)?[.]\d+'
         t.value = float(t.value)
         return t
 
-    def t_INT(t):
+    def t_INT(self, t):
         r'\d+'
         t.value = int(t.value)
         return t
