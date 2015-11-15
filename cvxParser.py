@@ -84,11 +84,9 @@ class cvxParser(object):
 
     def p_statement(self,p):
         '''statement : create
-                     | constraint
-                     | dual_constraint
                      | empty
         '''
-        #TO DO: add chained constrait to statement    | chained_constraint
+        #TO DO: add constraint, dual constraint and chained constrait to statement    | chained_constraint   | constraint  | dual_constraint
 
         if p[1] is not None: p[0] = p[1]
         else: p[0] = []
@@ -169,7 +167,7 @@ class cvxParser(object):
         p[0] = [p[1]]
 
 
-
+    """
     def p_constraint(self,p):
         '''constraint : expression LOGICALEQUAL expression
                       | expression LESSTHANEQUAL expression
@@ -188,12 +186,15 @@ class cvxParser(object):
         else:
             p[0] = [p[1] > p[3]]
 
+    """
 
-
+    """
     def p_contraint_parens(self,p):
         ' contraint : LPAREN contraint RPAREN '
         p[0] = p[2]
+    """
 
+    """
     def p_dual_constraint(self,p):
         'dual_constraint : ID COLON constraint'
         if p[1] in self.decl_dual_variables:
@@ -201,6 +202,7 @@ class cvxParser(object):
             # a constraint is a singleton list
             p[3][0].dual_var = p[1]
         p[0] = p[3]
+    """
 
     #to do  Chain constraints
 
