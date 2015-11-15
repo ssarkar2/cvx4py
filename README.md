@@ -6,7 +6,7 @@ example.py is the file the user writes, where he/she calls cvx4py to solve conve
 
 cvx4py.py is the entry point. It calls cvxParser, which in turn calls cvxLexer
 
-
+x
 
 TODO:
 1) implement cvxParser class
