@@ -20,7 +20,7 @@ class cvxParser(object):
 
 
     def parse(self, cvxProgramString):
-        
+
         pass
         #return self.parserObj.parse(cvxProgramString)  #uncomment once parser is implemented
 
@@ -64,12 +64,14 @@ class cvxParser(object):
         'program : empty'
         pass
 
+    def p_empty(self,p):
+        'empty : '
+        pass
 
 
     def p_statements_statement(self,p):
         '''statements : statement NL
-                        |statement SEMICOLON
-        '''
+                      | statement SEMICOLON'''
         p[0] = p[1]
 
     def p_statements_many_statement(self,p):
@@ -84,15 +86,16 @@ class cvxParser(object):
         '''statement : create
                      | constraint
                      | dual_constraint
-                     | chained_constraint
                      | empty
         '''
+        #TO DO: add chained constrait to statement    | chained_constraint
+
         if p[1] is not None: p[0] = p[1]
         else: p[0] = []
 
     def p_objective(self,p):
         '''objective : SENSE expression NL
-                     | SENSE expression NL SUBJ TO NL'''
+                     | SENSE expression NL SUBJECT TO NL'''
         p[0] = ProgramObjective(p[1],p[2])
 
 
@@ -105,10 +108,8 @@ class cvxParser(object):
 
     def p_create_identifiers(self,p):
         'create : VARIABLES arraylist'
-
         if(p[1] == 'variables'):
             self.decl_variables.update({name: Variable(name, shape) for (name,shape) in p[2]})
-
 
     def p_create_dual_variable(self, p):
         'create : DUAL VARIABLE ID'
@@ -144,13 +145,13 @@ class cvxParser(object):
 
     def p_dimlist_list(self,p):
         '''dimlist : dimlist COMMA ID
-                   | dimlist COMMA INTEGER
+                   | dimlist COMMA INT
         '''
         self._check_dimension(p[3], p.lineno(3), p.lexpos(3))
         p[0] = p[1] + [p[3]]
 
     def p_dimlist_singleton(self,p):
-        '''dimlist : INTEGER
+        '''dimlist : INT
                    | ID
         '''
         self._check_dimension(p[1], p.lineno(1), p.lexpos(1))
@@ -171,15 +172,23 @@ class cvxParser(object):
 
     def p_constraint(self,p):
         '''constraint : expression LOGICALEQUAL expression
-                      | expression LEQ expression
-                      | expression GEQ expression
+                      | expression LESSTHANEQUAL expression
+                      | expression GREATERTHANEQUAL expression
+                      | expression LESSTHAN expression
+                      | expression GREATERTHAN expression
         '''
         if p[2] == '==':
             p[0] = [p[1] == p[3]]
         elif p[2] == '<=':
             p[0] = [p[1] <= p[3]]
-        else:
+        elif p[2] == '>=':
             p[0] = [p[1] >= p[3]]
+        elif p[2] == '<':
+            p[0] = [p[1] < p[3]]
+        else:
+            p[0] = [p[1] > p[3]]
+
+
 
     def p_contraint_parens(self,p):
         ' contraint : LPAREN contraint RPAREN '
@@ -198,7 +207,7 @@ class cvxParser(object):
     def p_expression_add(self,p):
         'expression : expression PLUS expression'
         p[0] = p[1] + p[3] # expression + epxression
-        
+
     def p_expression_minus(self,p):
         'expression : expression MINUS expression'
         p[0] = p[1] - p[3]
@@ -230,10 +239,10 @@ class cvxParser(object):
         'expression : expression TRANSPOSE'
         if isscalar(p[1]): p[0] = p[1]
         else: p[0] = Transpose(p[1])
-        
+
     def p_expression_constant(self,p):
-        '''expression : CONSTANT
-                      | INTEGER
+        '''expression : FLOAT
+                      | INT
                       | ID'''
         # these are leaves in the expression tree
         if isinstance(p[1], float):
@@ -258,3 +267,6 @@ class cvxParser(object):
             elif parameter and not variable:
                 p[0] = parameter
                 self.parameters[p[1]] = parameter
+
+    def p_error(self, t):
+        print("Syntax error at '%s'" % t.value)

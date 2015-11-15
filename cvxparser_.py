@@ -5,7 +5,9 @@ import ply.lex as lex
 
 # List of token names.
 tokens = [
-    'NUMBER',
+    #'NUMBER',
+    'INT',
+    'FLOAT',
     #arithmetic operators
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
     #punctuators
@@ -13,6 +15,7 @@ tokens = [
     'SEMICOLON', 'COLON', 'DOT', 'SINGLEQUOTE',
     'EQUAL',
     'COMMENT',
+    'NL',
 
     'ID',
 
@@ -37,6 +40,7 @@ t_PLUS       = r'\+'; t_MINUS      = r'-'; t_TIMES      = r'\*'; t_DIVIDE      =
 t_LPAREN     = r'\('; t_RPAREN     = r'\)';
 t_SEMICOLON  = r'\;'; t_COLON      = r'\:'; t_DOT        = r'\.'; t_SINGLEQUOTE = r'\''
 t_EQUAL  = r'\='
+
 #t_COMMENT = r'\$'
 #logical operators
 t_LOGICALEQUAL  = r'\==';  t_LESSTHAN = r'\<';  t_GREATERTHAN = r'\>';  t_LESSTHANEQUAL = r'\<=';  t_GREATERTHANEQUAL = r'\>='
@@ -46,6 +50,7 @@ def t_COMMENT(t):  #ignore anything after this, till newline  #http://blog.oster
     return t
 
 # A regular expression rule with some action code
+'''
 def t_NUMBER(t):
     r'\d+(\.\d+)?'
     if ('.' in t.value):
@@ -53,11 +58,33 @@ def t_NUMBER(t):
     else:
         t.value = int(t.value)
     return t
+'''
+
+
+#keep defination of FLOAT above that of INT (precedence)
+def t_FLOAT(t):
+    r'(\d*)?[.]\d+'
+    t.value = float(t.value)
+    return t
+
+def t_INT(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+
+
 
 # Define a rule so we can track line numbers
-def t_newline(t):
+"""def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+"""
+
+def t_NL(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+    #t.value = len(t.value) - 1 - t.value.rfind('\n')
+    return t
 
 #Define a rule to get ID and keywords
 def t_ID(t):
@@ -75,18 +102,22 @@ def t_error(t):
     t.type = 'ERROR'
     return t
 
-# Build the lexer
-lexer = lex.lex()
 
-# Test it out
-f = open("myfile.cvx", "r")
-data = f.read()
+def parse(data):
+    # Build the lexer
+    lexer = lex.lex()
 
-# Give the lexer some input
-lexer.input(data)
+    # Test it out
+    f = open("myfile.cvx", "r")
+    data = f.read()
 
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok: break      # No more input
-    print tok
+    # Give the lexer some input
+    lexer.input(data)
+
+    # Tokenize
+    while True:
+        tok = lexer.token()
+        if not tok: break      # No more input
+        print tok
+
+parse(1)
