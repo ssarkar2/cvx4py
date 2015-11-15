@@ -7,16 +7,10 @@ Unused terminals:
     MIN
     EQUAL
     VAR
-    LESSTHAN
     DOT
     COMMENT
-    LESSTHANEQUAL
-    COLON
-    LOGICALEQUAL
     POLYVAL
     ABS
-    GREATERTHAN
-    GREATERTHANEQUAL
     CVX_BEGIN
     POWER
     MAX
@@ -37,90 +31,101 @@ Rule 6     statements -> statement SEMICOLON
 Rule 7     statements -> statements SEMICOLON statement NL
 Rule 8     statements -> statements COMMA statement NL
 Rule 9     statement -> create
-Rule 10    statement -> empty
-Rule 11    objective -> SENSE expression NL
-Rule 12    objective -> SENSE expression NL SUBJECT TO NL
-Rule 13    create -> VARIABLE array
-Rule 14    create -> VARIABLES arraylist
-Rule 15    create -> DUAL VARIABLE ID
-Rule 16    create -> DUAL VARIABLES idlist
-Rule 17    array -> ID LPAREN dimlist RPAREN
-Rule 18    array -> ID
-Rule 19    array -> ID LPAREN RPAREN
-Rule 20    arraylist -> arraylist array
-Rule 21    arraylist -> array
-Rule 22    dimlist -> dimlist COMMA ID
-Rule 23    dimlist -> dimlist COMMA INT
-Rule 24    dimlist -> INT
-Rule 25    dimlist -> ID
-Rule 26    idlist -> idlist ID
-Rule 27    idlist -> ID
-Rule 28    expression -> expression PLUS expression
-Rule 29    expression -> expression MINUS expression
-Rule 30    expression -> expression DIVIDE INT
-Rule 31    expression -> expression DIVIDE FLOAT
-Rule 32    expression -> expression TIMES expression
-Rule 33    expression -> LPAREN expression RPAREN
-Rule 34    expression -> MINUS expression
-Rule 35    expression -> expression TRANSPOSE
-Rule 36    expression -> FLOAT
-Rule 37    expression -> INT
-Rule 38    expression -> ID
+Rule 10    statement -> constraint
+Rule 11    statement -> dual_constraint
+Rule 12    statement -> empty
+Rule 13    objective -> SENSE expression NL
+Rule 14    objective -> SENSE expression NL SUBJECT TO NL
+Rule 15    create -> VARIABLE array
+Rule 16    create -> VARIABLES arraylist
+Rule 17    create -> DUAL VARIABLE ID
+Rule 18    create -> DUAL VARIABLES idlist
+Rule 19    array -> ID LPAREN dimlist RPAREN
+Rule 20    array -> ID
+Rule 21    array -> ID LPAREN RPAREN
+Rule 22    arraylist -> arraylist array
+Rule 23    arraylist -> array
+Rule 24    dimlist -> dimlist COMMA ID
+Rule 25    dimlist -> dimlist COMMA INT
+Rule 26    dimlist -> INT
+Rule 27    dimlist -> ID
+Rule 28    idlist -> idlist ID
+Rule 29    idlist -> ID
+Rule 30    constraint -> expression LOGICALEQUAL expression
+Rule 31    constraint -> expression LESSTHANEQUAL expression
+Rule 32    constraint -> expression GREATERTHANEQUAL expression
+Rule 33    constraint -> expression LESSTHAN expression
+Rule 34    constraint -> expression GREATERTHAN expression
+Rule 35    constraint -> LPAREN constraint RPAREN
+Rule 36    dual_constraint -> ID COLON constraint
+Rule 37    expression -> expression PLUS expression
+Rule 38    expression -> expression MINUS expression
+Rule 39    expression -> expression DIVIDE INT
+Rule 40    expression -> expression DIVIDE FLOAT
+Rule 41    expression -> expression TIMES expression
+Rule 42    expression -> LPAREN expression RPAREN
+Rule 43    expression -> MINUS expression
+Rule 44    expression -> expression TRANSPOSE
+Rule 45    expression -> FLOAT
+Rule 46    expression -> INT
+Rule 47    expression -> ID
 
 Terminals, with rules where they appear
 
 ABS                  : 
-COLON                : 
-COMMA                : 8 22 23
+COLON                : 36
+COMMA                : 8 24 25
 COMMENT              : 
 CVX_BEGIN            : 
 CVX_END              : 
-DIVIDE               : 30 31
+DIVIDE               : 39 40
 DOT                  : 
-DUAL                 : 15 16
+DUAL                 : 17 18
 EQUAL                : 
 EXP                  : 
-FLOAT                : 31 36
-GREATERTHAN          : 
-GREATERTHANEQUAL     : 
-ID                   : 15 17 18 19 22 25 26 27 38
-INT                  : 23 24 30 37
-LESSTHAN             : 
-LESSTHANEQUAL        : 
+FLOAT                : 40 45
+GREATERTHAN          : 34
+GREATERTHANEQUAL     : 32
+ID                   : 17 19 20 21 24 27 28 29 36 47
+INT                  : 25 26 39 46
+LESSTHAN             : 33
+LESSTHANEQUAL        : 31
 LOG                  : 
-LOGICALEQUAL         : 
-LPAREN               : 17 19 33
+LOGICALEQUAL         : 30
+LPAREN               : 19 21 35 42
 MAX                  : 
 MIN                  : 
-MINUS                : 29 34
-NL                   : 5 7 8 11 12 12
+MINUS                : 38 43
+NL                   : 5 7 8 13 14 14
 NORM                 : 
-PLUS                 : 28
+PLUS                 : 37
 POLYVAL              : 
 POWER                : 
-RPAREN               : 17 19 33
+RPAREN               : 19 21 35 42
 SEMICOLON            : 6 7
-SENSE                : 11 12
+SENSE                : 13 14
 SQRT                 : 
 STD                  : 
-SUBJECT              : 12
-TIMES                : 32
-TO                   : 12
-TRANSPOSE            : 35
+SUBJECT              : 14
+TIMES                : 41
+TO                   : 14
+TRANSPOSE            : 44
 VAR                  : 
-VARIABLE             : 13 15
-VARIABLES            : 14 16
+VARIABLE             : 15 17
+VARIABLES            : 16 18
 error                : 
 
 Nonterminals, with rules where they appear
 
-array                : 13 20 21
-arraylist            : 14 20
+array                : 15 22 23
+arraylist            : 16 22
+constraint           : 10 35 36
 create               : 9
-dimlist              : 17 22 23
-empty                : 3 10
-expression           : 11 12 28 28 29 29 30 31 32 32 33 34 35
-idlist               : 16 26
+dimlist              : 19 24 25
+dual_constraint      : 11
+empty                : 3 12
+expression           : 13 14 30 30 31 31 32 32 33 33 34 34 37 37 38 38 39 40 41 41 42 43 44
+idlist               : 18 28
 objective            : 1 2
 program              : 0
 statement            : 5 6 7 8
@@ -140,35 +145,101 @@ state 0
     (8) statements -> . statements COMMA statement NL
     (4) empty -> .
     (9) statement -> . create
-    (10) statement -> . empty
-    (13) create -> . VARIABLE array
-    (14) create -> . VARIABLES arraylist
-    (15) create -> . DUAL VARIABLE ID
-    (16) create -> . DUAL VARIABLES idlist
+    (10) statement -> . constraint
+    (11) statement -> . dual_constraint
+    (12) statement -> . empty
+    (15) create -> . VARIABLE array
+    (16) create -> . VARIABLES arraylist
+    (17) create -> . DUAL VARIABLE ID
+    (18) create -> . DUAL VARIABLES idlist
+    (30) constraint -> . expression LOGICALEQUAL expression
+    (31) constraint -> . expression LESSTHANEQUAL expression
+    (32) constraint -> . expression GREATERTHANEQUAL expression
+    (33) constraint -> . expression LESSTHAN expression
+    (34) constraint -> . expression GREATERTHAN expression
+    (35) constraint -> . LPAREN constraint RPAREN
+    (36) dual_constraint -> . ID COLON constraint
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
 
     $end            reduce using rule 4 (empty -> .)
     NL              reduce using rule 4 (empty -> .)
     SEMICOLON       reduce using rule 4 (empty -> .)
-    VARIABLE        shift and go to state 3
-    VARIABLES       shift and go to state 7
-    DUAL            shift and go to state 1
+    VARIABLE        shift and go to state 10
+    VARIABLES       shift and go to state 16
+    DUAL            shift and go to state 2
+    LPAREN          shift and go to state 8
+    ID              shift and go to state 11
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
 
-    statements                     shift and go to state 6
-    create                         shift and go to state 2
-    program                        shift and go to state 4
-    statement                      shift and go to state 5
-    empty                          shift and go to state 8
+    statements                     shift and go to state 1
+    constraint                     shift and go to state 12
+    create                         shift and go to state 4
+    program                        shift and go to state 5
+    statement                      shift and go to state 6
+    dual_constraint                shift and go to state 9
+    expression                     shift and go to state 15
+    empty                          shift and go to state 7
 
 state 1
 
-    (15) create -> DUAL . VARIABLE ID
-    (16) create -> DUAL . VARIABLES idlist
+    (1) program -> statements . objective statements
+    (2) program -> statements . objective
+    (7) statements -> statements . SEMICOLON statement NL
+    (8) statements -> statements . COMMA statement NL
+    (13) objective -> . SENSE expression NL
+    (14) objective -> . SENSE expression NL SUBJECT TO NL
 
-    VARIABLE        shift and go to state 9
-    VARIABLES       shift and go to state 10
+    SEMICOLON       shift and go to state 17
+    COMMA           shift and go to state 18
+    SENSE           shift and go to state 19
 
+    objective                      shift and go to state 20
 
 state 2
+
+    (17) create -> DUAL . VARIABLE ID
+    (18) create -> DUAL . VARIABLES idlist
+
+    VARIABLE        shift and go to state 21
+    VARIABLES       shift and go to state 22
+
+
+state 3
+
+    (43) expression -> MINUS . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 25
+
+state 4
 
     (9) statement -> create .
 
@@ -176,193 +247,306 @@ state 2
     SEMICOLON       reduce using rule 9 (statement -> create .)
 
 
-state 3
-
-    (13) create -> VARIABLE . array
-    (17) array -> . ID LPAREN dimlist RPAREN
-    (18) array -> . ID
-    (19) array -> . ID LPAREN RPAREN
-
-    ID              shift and go to state 12
-
-    array                          shift and go to state 11
-
-state 4
+state 5
 
     (0) S' -> program .
 
 
 
-state 5
+state 6
 
     (5) statements -> statement . NL
     (6) statements -> statement . SEMICOLON
 
-    NL              shift and go to state 13
-    SEMICOLON       shift and go to state 14
+    NL              shift and go to state 26
+    SEMICOLON       shift and go to state 27
 
-
-state 6
-
-    (1) program -> statements . objective statements
-    (2) program -> statements . objective
-    (7) statements -> statements . SEMICOLON statement NL
-    (8) statements -> statements . COMMA statement NL
-    (11) objective -> . SENSE expression NL
-    (12) objective -> . SENSE expression NL SUBJECT TO NL
-
-    SEMICOLON       shift and go to state 15
-    COMMA           shift and go to state 16
-    SENSE           shift and go to state 17
-
-    objective                      shift and go to state 18
 
 state 7
 
-    (14) create -> VARIABLES . arraylist
-    (20) arraylist -> . arraylist array
-    (21) arraylist -> . array
-    (17) array -> . ID LPAREN dimlist RPAREN
-    (18) array -> . ID
-    (19) array -> . ID LPAREN RPAREN
+    (3) program -> empty .
+    (12) statement -> empty .
 
-    ID              shift and go to state 12
+    $end            reduce using rule 3 (program -> empty .)
+    NL              reduce using rule 12 (statement -> empty .)
+    SEMICOLON       reduce using rule 12 (statement -> empty .)
 
-    arraylist                      shift and go to state 20
-    array                          shift and go to state 19
 
 state 8
 
-    (3) program -> empty .
-    (10) statement -> empty .
+    (35) constraint -> LPAREN . constraint RPAREN
+    (42) expression -> LPAREN . expression RPAREN
+    (30) constraint -> . expression LOGICALEQUAL expression
+    (31) constraint -> . expression LESSTHANEQUAL expression
+    (32) constraint -> . expression GREATERTHANEQUAL expression
+    (33) constraint -> . expression LESSTHAN expression
+    (34) constraint -> . expression GREATERTHAN expression
+    (35) constraint -> . LPAREN constraint RPAREN
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
 
-    $end            reduce using rule 3 (program -> empty .)
-    NL              reduce using rule 10 (statement -> empty .)
-    SEMICOLON       reduce using rule 10 (statement -> empty .)
+    LPAREN          shift and go to state 8
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
 
+    expression                     shift and go to state 29
+    constraint                     shift and go to state 28
 
 state 9
 
-    (15) create -> DUAL VARIABLE . ID
+    (11) statement -> dual_constraint .
 
-    ID              shift and go to state 21
+    NL              reduce using rule 11 (statement -> dual_constraint .)
+    SEMICOLON       reduce using rule 11 (statement -> dual_constraint .)
 
 
 state 10
 
-    (16) create -> DUAL VARIABLES . idlist
-    (26) idlist -> . idlist ID
-    (27) idlist -> . ID
+    (15) create -> VARIABLE . array
+    (19) array -> . ID LPAREN dimlist RPAREN
+    (20) array -> . ID
+    (21) array -> . ID LPAREN RPAREN
 
-    ID              shift and go to state 23
+    ID              shift and go to state 31
 
-    idlist                         shift and go to state 22
+    array                          shift and go to state 30
 
 state 11
 
-    (13) create -> VARIABLE array .
+    (36) dual_constraint -> ID . COLON constraint
+    (47) expression -> ID .
 
-    NL              reduce using rule 13 (create -> VARIABLE array .)
-    SEMICOLON       reduce using rule 13 (create -> VARIABLE array .)
+    COLON           shift and go to state 32
+    LOGICALEQUAL    reduce using rule 47 (expression -> ID .)
+    LESSTHANEQUAL   reduce using rule 47 (expression -> ID .)
+    GREATERTHANEQUAL reduce using rule 47 (expression -> ID .)
+    LESSTHAN        reduce using rule 47 (expression -> ID .)
+    GREATERTHAN     reduce using rule 47 (expression -> ID .)
+    PLUS            reduce using rule 47 (expression -> ID .)
+    MINUS           reduce using rule 47 (expression -> ID .)
+    DIVIDE          reduce using rule 47 (expression -> ID .)
+    TIMES           reduce using rule 47 (expression -> ID .)
+    TRANSPOSE       reduce using rule 47 (expression -> ID .)
 
 
 state 12
 
-    (17) array -> ID . LPAREN dimlist RPAREN
-    (18) array -> ID .
-    (19) array -> ID . LPAREN RPAREN
+    (10) statement -> constraint .
 
-    LPAREN          shift and go to state 24
-    ID              reduce using rule 18 (array -> ID .)
-    NL              reduce using rule 18 (array -> ID .)
-    SEMICOLON       reduce using rule 18 (array -> ID .)
+    NL              reduce using rule 10 (statement -> constraint .)
+    SEMICOLON       reduce using rule 10 (statement -> constraint .)
 
 
 state 13
 
-    (5) statements -> statement NL .
+    (46) expression -> INT .
 
-    SEMICOLON       reduce using rule 5 (statements -> statement NL .)
-    COMMA           reduce using rule 5 (statements -> statement NL .)
-    $end            reduce using rule 5 (statements -> statement NL .)
-    SENSE           reduce using rule 5 (statements -> statement NL .)
+    PLUS            reduce using rule 46 (expression -> INT .)
+    MINUS           reduce using rule 46 (expression -> INT .)
+    DIVIDE          reduce using rule 46 (expression -> INT .)
+    TIMES           reduce using rule 46 (expression -> INT .)
+    TRANSPOSE       reduce using rule 46 (expression -> INT .)
+    NL              reduce using rule 46 (expression -> INT .)
+    SEMICOLON       reduce using rule 46 (expression -> INT .)
+    RPAREN          reduce using rule 46 (expression -> INT .)
+    LOGICALEQUAL    reduce using rule 46 (expression -> INT .)
+    LESSTHANEQUAL   reduce using rule 46 (expression -> INT .)
+    GREATERTHANEQUAL reduce using rule 46 (expression -> INT .)
+    LESSTHAN        reduce using rule 46 (expression -> INT .)
+    GREATERTHAN     reduce using rule 46 (expression -> INT .)
 
 
 state 14
 
-    (6) statements -> statement SEMICOLON .
+    (45) expression -> FLOAT .
 
-    SEMICOLON       reduce using rule 6 (statements -> statement SEMICOLON .)
-    COMMA           reduce using rule 6 (statements -> statement SEMICOLON .)
-    $end            reduce using rule 6 (statements -> statement SEMICOLON .)
-    SENSE           reduce using rule 6 (statements -> statement SEMICOLON .)
+    PLUS            reduce using rule 45 (expression -> FLOAT .)
+    MINUS           reduce using rule 45 (expression -> FLOAT .)
+    DIVIDE          reduce using rule 45 (expression -> FLOAT .)
+    TIMES           reduce using rule 45 (expression -> FLOAT .)
+    TRANSPOSE       reduce using rule 45 (expression -> FLOAT .)
+    NL              reduce using rule 45 (expression -> FLOAT .)
+    SEMICOLON       reduce using rule 45 (expression -> FLOAT .)
+    RPAREN          reduce using rule 45 (expression -> FLOAT .)
+    LOGICALEQUAL    reduce using rule 45 (expression -> FLOAT .)
+    LESSTHANEQUAL   reduce using rule 45 (expression -> FLOAT .)
+    GREATERTHANEQUAL reduce using rule 45 (expression -> FLOAT .)
+    LESSTHAN        reduce using rule 45 (expression -> FLOAT .)
+    GREATERTHAN     reduce using rule 45 (expression -> FLOAT .)
 
 
 state 15
 
-    (7) statements -> statements SEMICOLON . statement NL
-    (9) statement -> . create
-    (10) statement -> . empty
-    (13) create -> . VARIABLE array
-    (14) create -> . VARIABLES arraylist
-    (15) create -> . DUAL VARIABLE ID
-    (16) create -> . DUAL VARIABLES idlist
-    (4) empty -> .
+    (30) constraint -> expression . LOGICALEQUAL expression
+    (31) constraint -> expression . LESSTHANEQUAL expression
+    (32) constraint -> expression . GREATERTHANEQUAL expression
+    (33) constraint -> expression . LESSTHAN expression
+    (34) constraint -> expression . GREATERTHAN expression
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
 
-    VARIABLE        shift and go to state 3
-    VARIABLES       shift and go to state 7
-    DUAL            shift and go to state 1
-    NL              reduce using rule 4 (empty -> .)
+    LOGICALEQUAL    shift and go to state 40
+    LESSTHANEQUAL   shift and go to state 34
+    GREATERTHANEQUAL shift and go to state 36
+    LESSTHAN        shift and go to state 38
+    GREATERTHAN     shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
 
-    statement                      shift and go to state 25
-    create                         shift and go to state 2
-    empty                          shift and go to state 26
 
 state 16
 
-    (8) statements -> statements COMMA . statement NL
-    (9) statement -> . create
-    (10) statement -> . empty
-    (13) create -> . VARIABLE array
-    (14) create -> . VARIABLES arraylist
-    (15) create -> . DUAL VARIABLE ID
-    (16) create -> . DUAL VARIABLES idlist
-    (4) empty -> .
+    (16) create -> VARIABLES . arraylist
+    (22) arraylist -> . arraylist array
+    (23) arraylist -> . array
+    (19) array -> . ID LPAREN dimlist RPAREN
+    (20) array -> . ID
+    (21) array -> . ID LPAREN RPAREN
 
-    VARIABLE        shift and go to state 3
-    VARIABLES       shift and go to state 7
-    DUAL            shift and go to state 1
-    NL              reduce using rule 4 (empty -> .)
+    ID              shift and go to state 31
 
-    statement                      shift and go to state 27
-    create                         shift and go to state 2
-    empty                          shift and go to state 26
+    arraylist                      shift and go to state 44
+    array                          shift and go to state 43
 
 state 17
 
-    (11) objective -> SENSE . expression NL
-    (12) objective -> SENSE . expression NL SUBJECT TO NL
-    (28) expression -> . expression PLUS expression
-    (29) expression -> . expression MINUS expression
-    (30) expression -> . expression DIVIDE INT
-    (31) expression -> . expression DIVIDE FLOAT
-    (32) expression -> . expression TIMES expression
-    (33) expression -> . LPAREN expression RPAREN
-    (34) expression -> . MINUS expression
-    (35) expression -> . expression TRANSPOSE
-    (36) expression -> . FLOAT
-    (37) expression -> . INT
-    (38) expression -> . ID
+    (7) statements -> statements SEMICOLON . statement NL
+    (9) statement -> . create
+    (10) statement -> . constraint
+    (11) statement -> . dual_constraint
+    (12) statement -> . empty
+    (15) create -> . VARIABLE array
+    (16) create -> . VARIABLES arraylist
+    (17) create -> . DUAL VARIABLE ID
+    (18) create -> . DUAL VARIABLES idlist
+    (30) constraint -> . expression LOGICALEQUAL expression
+    (31) constraint -> . expression LESSTHANEQUAL expression
+    (32) constraint -> . expression GREATERTHANEQUAL expression
+    (33) constraint -> . expression LESSTHAN expression
+    (34) constraint -> . expression GREATERTHAN expression
+    (35) constraint -> . LPAREN constraint RPAREN
+    (36) dual_constraint -> . ID COLON constraint
+    (4) empty -> .
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
 
-    LPAREN          shift and go to state 30
-    MINUS           shift and go to state 33
-    FLOAT           shift and go to state 29
-    INT             shift and go to state 28
-    ID              shift and go to state 31
+    VARIABLE        shift and go to state 10
+    VARIABLES       shift and go to state 16
+    DUAL            shift and go to state 2
+    LPAREN          shift and go to state 8
+    ID              shift and go to state 11
+    NL              reduce using rule 4 (empty -> .)
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
 
-    expression                     shift and go to state 32
+    constraint                     shift and go to state 12
+    create                         shift and go to state 4
+    statement                      shift and go to state 45
+    dual_constraint                shift and go to state 9
+    expression                     shift and go to state 15
+    empty                          shift and go to state 46
 
 state 18
+
+    (8) statements -> statements COMMA . statement NL
+    (9) statement -> . create
+    (10) statement -> . constraint
+    (11) statement -> . dual_constraint
+    (12) statement -> . empty
+    (15) create -> . VARIABLE array
+    (16) create -> . VARIABLES arraylist
+    (17) create -> . DUAL VARIABLE ID
+    (18) create -> . DUAL VARIABLES idlist
+    (30) constraint -> . expression LOGICALEQUAL expression
+    (31) constraint -> . expression LESSTHANEQUAL expression
+    (32) constraint -> . expression GREATERTHANEQUAL expression
+    (33) constraint -> . expression LESSTHAN expression
+    (34) constraint -> . expression GREATERTHAN expression
+    (35) constraint -> . LPAREN constraint RPAREN
+    (36) dual_constraint -> . ID COLON constraint
+    (4) empty -> .
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    VARIABLE        shift and go to state 10
+    VARIABLES       shift and go to state 16
+    DUAL            shift and go to state 2
+    LPAREN          shift and go to state 8
+    ID              shift and go to state 11
+    NL              reduce using rule 4 (empty -> .)
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+
+    constraint                     shift and go to state 12
+    create                         shift and go to state 4
+    statement                      shift and go to state 47
+    dual_constraint                shift and go to state 9
+    expression                     shift and go to state 15
+    empty                          shift and go to state 46
+
+state 19
+
+    (13) objective -> SENSE . expression NL
+    (14) objective -> SENSE . expression NL SUBJECT TO NL
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 48
+
+state 20
 
     (1) program -> statements objective . statements
     (2) program -> statements objective .
@@ -371,618 +555,1015 @@ state 18
     (7) statements -> . statements SEMICOLON statement NL
     (8) statements -> . statements COMMA statement NL
     (9) statement -> . create
-    (10) statement -> . empty
-    (13) create -> . VARIABLE array
-    (14) create -> . VARIABLES arraylist
-    (15) create -> . DUAL VARIABLE ID
-    (16) create -> . DUAL VARIABLES idlist
+    (10) statement -> . constraint
+    (11) statement -> . dual_constraint
+    (12) statement -> . empty
+    (15) create -> . VARIABLE array
+    (16) create -> . VARIABLES arraylist
+    (17) create -> . DUAL VARIABLE ID
+    (18) create -> . DUAL VARIABLES idlist
+    (30) constraint -> . expression LOGICALEQUAL expression
+    (31) constraint -> . expression LESSTHANEQUAL expression
+    (32) constraint -> . expression GREATERTHANEQUAL expression
+    (33) constraint -> . expression LESSTHAN expression
+    (34) constraint -> . expression GREATERTHAN expression
+    (35) constraint -> . LPAREN constraint RPAREN
+    (36) dual_constraint -> . ID COLON constraint
     (4) empty -> .
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
 
     $end            reduce using rule 2 (program -> statements objective .)
-    VARIABLE        shift and go to state 3
-    VARIABLES       shift and go to state 7
-    DUAL            shift and go to state 1
+    VARIABLE        shift and go to state 10
+    VARIABLES       shift and go to state 16
+    DUAL            shift and go to state 2
+    LPAREN          shift and go to state 8
+    ID              shift and go to state 11
     NL              reduce using rule 4 (empty -> .)
     SEMICOLON       reduce using rule 4 (empty -> .)
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
 
-    statements                     shift and go to state 34
-    create                         shift and go to state 2
-    statement                      shift and go to state 5
-    empty                          shift and go to state 26
-
-state 19
-
-    (21) arraylist -> array .
-
-    ID              reduce using rule 21 (arraylist -> array .)
-    NL              reduce using rule 21 (arraylist -> array .)
-    SEMICOLON       reduce using rule 21 (arraylist -> array .)
-
-
-state 20
-
-    (14) create -> VARIABLES arraylist .
-    (20) arraylist -> arraylist . array
-    (17) array -> . ID LPAREN dimlist RPAREN
-    (18) array -> . ID
-    (19) array -> . ID LPAREN RPAREN
-
-    NL              reduce using rule 14 (create -> VARIABLES arraylist .)
-    SEMICOLON       reduce using rule 14 (create -> VARIABLES arraylist .)
-    ID              shift and go to state 12
-
-    array                          shift and go to state 35
+    statements                     shift and go to state 49
+    constraint                     shift and go to state 12
+    create                         shift and go to state 4
+    statement                      shift and go to state 6
+    dual_constraint                shift and go to state 9
+    expression                     shift and go to state 15
+    empty                          shift and go to state 46
 
 state 21
 
-    (15) create -> DUAL VARIABLE ID .
+    (17) create -> DUAL VARIABLE . ID
 
-    NL              reduce using rule 15 (create -> DUAL VARIABLE ID .)
-    SEMICOLON       reduce using rule 15 (create -> DUAL VARIABLE ID .)
+    ID              shift and go to state 50
 
 
 state 22
 
-    (16) create -> DUAL VARIABLES idlist .
-    (26) idlist -> idlist . ID
+    (18) create -> DUAL VARIABLES . idlist
+    (28) idlist -> . idlist ID
+    (29) idlist -> . ID
 
-    NL              reduce using rule 16 (create -> DUAL VARIABLES idlist .)
-    SEMICOLON       reduce using rule 16 (create -> DUAL VARIABLES idlist .)
-    ID              shift and go to state 36
+    ID              shift and go to state 52
 
+    idlist                         shift and go to state 51
 
 state 23
 
-    (27) idlist -> ID .
+    (42) expression -> LPAREN . expression RPAREN
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
 
-    ID              reduce using rule 27 (idlist -> ID .)
-    NL              reduce using rule 27 (idlist -> ID .)
-    SEMICOLON       reduce using rule 27 (idlist -> ID .)
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
 
+    expression                     shift and go to state 53
 
 state 24
 
-    (17) array -> ID LPAREN . dimlist RPAREN
-    (19) array -> ID LPAREN . RPAREN
-    (22) dimlist -> . dimlist COMMA ID
-    (23) dimlist -> . dimlist COMMA INT
-    (24) dimlist -> . INT
-    (25) dimlist -> . ID
+    (47) expression -> ID .
 
-    RPAREN          shift and go to state 37
-    INT             shift and go to state 38
-    ID              shift and go to state 40
+    PLUS            reduce using rule 47 (expression -> ID .)
+    MINUS           reduce using rule 47 (expression -> ID .)
+    DIVIDE          reduce using rule 47 (expression -> ID .)
+    TIMES           reduce using rule 47 (expression -> ID .)
+    TRANSPOSE       reduce using rule 47 (expression -> ID .)
+    NL              reduce using rule 47 (expression -> ID .)
+    SEMICOLON       reduce using rule 47 (expression -> ID .)
+    RPAREN          reduce using rule 47 (expression -> ID .)
+    LOGICALEQUAL    reduce using rule 47 (expression -> ID .)
+    LESSTHANEQUAL   reduce using rule 47 (expression -> ID .)
+    GREATERTHANEQUAL reduce using rule 47 (expression -> ID .)
+    LESSTHAN        reduce using rule 47 (expression -> ID .)
+    GREATERTHAN     reduce using rule 47 (expression -> ID .)
 
-    dimlist                        shift and go to state 39
 
 state 25
 
-    (7) statements -> statements SEMICOLON statement . NL
+    (43) expression -> MINUS expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
 
-    NL              shift and go to state 41
+    PLUS            reduce using rule 43 (expression -> MINUS expression .)
+    MINUS           reduce using rule 43 (expression -> MINUS expression .)
+    DIVIDE          reduce using rule 43 (expression -> MINUS expression .)
+    TIMES           reduce using rule 43 (expression -> MINUS expression .)
+    TRANSPOSE       reduce using rule 43 (expression -> MINUS expression .)
+    NL              reduce using rule 43 (expression -> MINUS expression .)
+    SEMICOLON       reduce using rule 43 (expression -> MINUS expression .)
+    RPAREN          reduce using rule 43 (expression -> MINUS expression .)
+    LOGICALEQUAL    reduce using rule 43 (expression -> MINUS expression .)
+    LESSTHANEQUAL   reduce using rule 43 (expression -> MINUS expression .)
+    GREATERTHANEQUAL reduce using rule 43 (expression -> MINUS expression .)
+    LESSTHAN        reduce using rule 43 (expression -> MINUS expression .)
+    GREATERTHAN     reduce using rule 43 (expression -> MINUS expression .)
+
+  ! PLUS            [ shift and go to state 41 ]
+  ! MINUS           [ shift and go to state 42 ]
+  ! DIVIDE          [ shift and go to state 33 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! TRANSPOSE       [ shift and go to state 35 ]
 
 
 state 26
 
-    (10) statement -> empty .
+    (5) statements -> statement NL .
 
-    NL              reduce using rule 10 (statement -> empty .)
-    SEMICOLON       reduce using rule 10 (statement -> empty .)
+    SEMICOLON       reduce using rule 5 (statements -> statement NL .)
+    COMMA           reduce using rule 5 (statements -> statement NL .)
+    SENSE           reduce using rule 5 (statements -> statement NL .)
+    $end            reduce using rule 5 (statements -> statement NL .)
 
 
 state 27
 
-    (8) statements -> statements COMMA statement . NL
+    (6) statements -> statement SEMICOLON .
 
-    NL              shift and go to state 42
+    SEMICOLON       reduce using rule 6 (statements -> statement SEMICOLON .)
+    COMMA           reduce using rule 6 (statements -> statement SEMICOLON .)
+    SENSE           reduce using rule 6 (statements -> statement SEMICOLON .)
+    $end            reduce using rule 6 (statements -> statement SEMICOLON .)
 
 
 state 28
 
-    (37) expression -> INT .
+    (35) constraint -> LPAREN constraint . RPAREN
 
-    PLUS            reduce using rule 37 (expression -> INT .)
-    MINUS           reduce using rule 37 (expression -> INT .)
-    DIVIDE          reduce using rule 37 (expression -> INT .)
-    TIMES           reduce using rule 37 (expression -> INT .)
-    TRANSPOSE       reduce using rule 37 (expression -> INT .)
-    NL              reduce using rule 37 (expression -> INT .)
-    RPAREN          reduce using rule 37 (expression -> INT .)
+    RPAREN          shift and go to state 54
 
 
 state 29
 
-    (36) expression -> FLOAT .
+    (42) expression -> LPAREN expression . RPAREN
+    (30) constraint -> expression . LOGICALEQUAL expression
+    (31) constraint -> expression . LESSTHANEQUAL expression
+    (32) constraint -> expression . GREATERTHANEQUAL expression
+    (33) constraint -> expression . LESSTHAN expression
+    (34) constraint -> expression . GREATERTHAN expression
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
 
-    PLUS            reduce using rule 36 (expression -> FLOAT .)
-    MINUS           reduce using rule 36 (expression -> FLOAT .)
-    DIVIDE          reduce using rule 36 (expression -> FLOAT .)
-    TIMES           reduce using rule 36 (expression -> FLOAT .)
-    TRANSPOSE       reduce using rule 36 (expression -> FLOAT .)
-    NL              reduce using rule 36 (expression -> FLOAT .)
-    RPAREN          reduce using rule 36 (expression -> FLOAT .)
+    RPAREN          shift and go to state 55
+    LOGICALEQUAL    shift and go to state 40
+    LESSTHANEQUAL   shift and go to state 34
+    GREATERTHANEQUAL shift and go to state 36
+    LESSTHAN        shift and go to state 38
+    GREATERTHAN     shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
 
 
 state 30
 
-    (33) expression -> LPAREN . expression RPAREN
-    (28) expression -> . expression PLUS expression
-    (29) expression -> . expression MINUS expression
-    (30) expression -> . expression DIVIDE INT
-    (31) expression -> . expression DIVIDE FLOAT
-    (32) expression -> . expression TIMES expression
-    (33) expression -> . LPAREN expression RPAREN
-    (34) expression -> . MINUS expression
-    (35) expression -> . expression TRANSPOSE
-    (36) expression -> . FLOAT
-    (37) expression -> . INT
-    (38) expression -> . ID
+    (15) create -> VARIABLE array .
 
-    LPAREN          shift and go to state 30
-    MINUS           shift and go to state 33
-    FLOAT           shift and go to state 29
-    INT             shift and go to state 28
-    ID              shift and go to state 31
+    NL              reduce using rule 15 (create -> VARIABLE array .)
+    SEMICOLON       reduce using rule 15 (create -> VARIABLE array .)
 
-    expression                     shift and go to state 43
 
 state 31
 
-    (38) expression -> ID .
+    (19) array -> ID . LPAREN dimlist RPAREN
+    (20) array -> ID .
+    (21) array -> ID . LPAREN RPAREN
 
-    PLUS            reduce using rule 38 (expression -> ID .)
-    MINUS           reduce using rule 38 (expression -> ID .)
-    DIVIDE          reduce using rule 38 (expression -> ID .)
-    TIMES           reduce using rule 38 (expression -> ID .)
-    TRANSPOSE       reduce using rule 38 (expression -> ID .)
-    NL              reduce using rule 38 (expression -> ID .)
-    RPAREN          reduce using rule 38 (expression -> ID .)
+    LPAREN          shift and go to state 56
+    NL              reduce using rule 20 (array -> ID .)
+    SEMICOLON       reduce using rule 20 (array -> ID .)
+    ID              reduce using rule 20 (array -> ID .)
 
 
 state 32
 
-    (11) objective -> SENSE expression . NL
-    (12) objective -> SENSE expression . NL SUBJECT TO NL
-    (28) expression -> expression . PLUS expression
-    (29) expression -> expression . MINUS expression
-    (30) expression -> expression . DIVIDE INT
-    (31) expression -> expression . DIVIDE FLOAT
-    (32) expression -> expression . TIMES expression
-    (35) expression -> expression . TRANSPOSE
+    (36) dual_constraint -> ID COLON . constraint
+    (30) constraint -> . expression LOGICALEQUAL expression
+    (31) constraint -> . expression LESSTHANEQUAL expression
+    (32) constraint -> . expression GREATERTHANEQUAL expression
+    (33) constraint -> . expression LESSTHAN expression
+    (34) constraint -> . expression GREATERTHAN expression
+    (35) constraint -> . LPAREN constraint RPAREN
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
 
-    NL              shift and go to state 44
-    PLUS            shift and go to state 48
-    MINUS           shift and go to state 49
-    DIVIDE          shift and go to state 45
-    TIMES           shift and go to state 47
-    TRANSPOSE       shift and go to state 46
+    LPAREN          shift and go to state 8
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
 
+    expression                     shift and go to state 15
+    constraint                     shift and go to state 57
 
 state 33
 
-    (34) expression -> MINUS . expression
-    (28) expression -> . expression PLUS expression
-    (29) expression -> . expression MINUS expression
-    (30) expression -> . expression DIVIDE INT
-    (31) expression -> . expression DIVIDE FLOAT
-    (32) expression -> . expression TIMES expression
-    (33) expression -> . LPAREN expression RPAREN
-    (34) expression -> . MINUS expression
-    (35) expression -> . expression TRANSPOSE
-    (36) expression -> . FLOAT
-    (37) expression -> . INT
-    (38) expression -> . ID
+    (39) expression -> expression DIVIDE . INT
+    (40) expression -> expression DIVIDE . FLOAT
 
-    LPAREN          shift and go to state 30
-    MINUS           shift and go to state 33
-    FLOAT           shift and go to state 29
-    INT             shift and go to state 28
-    ID              shift and go to state 31
+    INT             shift and go to state 58
+    FLOAT           shift and go to state 59
 
-    expression                     shift and go to state 50
 
 state 34
+
+    (31) constraint -> expression LESSTHANEQUAL . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 60
+
+state 35
+
+    (44) expression -> expression TRANSPOSE .
+
+    PLUS            reduce using rule 44 (expression -> expression TRANSPOSE .)
+    MINUS           reduce using rule 44 (expression -> expression TRANSPOSE .)
+    DIVIDE          reduce using rule 44 (expression -> expression TRANSPOSE .)
+    TIMES           reduce using rule 44 (expression -> expression TRANSPOSE .)
+    TRANSPOSE       reduce using rule 44 (expression -> expression TRANSPOSE .)
+    NL              reduce using rule 44 (expression -> expression TRANSPOSE .)
+    SEMICOLON       reduce using rule 44 (expression -> expression TRANSPOSE .)
+    RPAREN          reduce using rule 44 (expression -> expression TRANSPOSE .)
+    LOGICALEQUAL    reduce using rule 44 (expression -> expression TRANSPOSE .)
+    LESSTHANEQUAL   reduce using rule 44 (expression -> expression TRANSPOSE .)
+    GREATERTHANEQUAL reduce using rule 44 (expression -> expression TRANSPOSE .)
+    LESSTHAN        reduce using rule 44 (expression -> expression TRANSPOSE .)
+    GREATERTHAN     reduce using rule 44 (expression -> expression TRANSPOSE .)
+
+
+state 36
+
+    (32) constraint -> expression GREATERTHANEQUAL . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 61
+
+state 37
+
+    (41) expression -> expression TIMES . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 62
+
+state 38
+
+    (33) constraint -> expression LESSTHAN . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 63
+
+state 39
+
+    (34) constraint -> expression GREATERTHAN . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 64
+
+state 40
+
+    (30) constraint -> expression LOGICALEQUAL . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 65
+
+state 41
+
+    (37) expression -> expression PLUS . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 66
+
+state 42
+
+    (38) expression -> expression MINUS . expression
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression DIVIDE INT
+    (40) expression -> . expression DIVIDE FLOAT
+    (41) expression -> . expression TIMES expression
+    (42) expression -> . LPAREN expression RPAREN
+    (43) expression -> . MINUS expression
+    (44) expression -> . expression TRANSPOSE
+    (45) expression -> . FLOAT
+    (46) expression -> . INT
+    (47) expression -> . ID
+
+    LPAREN          shift and go to state 23
+    MINUS           shift and go to state 3
+    FLOAT           shift and go to state 14
+    INT             shift and go to state 13
+    ID              shift and go to state 24
+
+    expression                     shift and go to state 67
+
+state 43
+
+    (23) arraylist -> array .
+
+    ID              reduce using rule 23 (arraylist -> array .)
+    NL              reduce using rule 23 (arraylist -> array .)
+    SEMICOLON       reduce using rule 23 (arraylist -> array .)
+
+
+state 44
+
+    (16) create -> VARIABLES arraylist .
+    (22) arraylist -> arraylist . array
+    (19) array -> . ID LPAREN dimlist RPAREN
+    (20) array -> . ID
+    (21) array -> . ID LPAREN RPAREN
+
+    NL              reduce using rule 16 (create -> VARIABLES arraylist .)
+    SEMICOLON       reduce using rule 16 (create -> VARIABLES arraylist .)
+    ID              shift and go to state 31
+
+    array                          shift and go to state 68
+
+state 45
+
+    (7) statements -> statements SEMICOLON statement . NL
+
+    NL              shift and go to state 69
+
+
+state 46
+
+    (12) statement -> empty .
+
+    NL              reduce using rule 12 (statement -> empty .)
+    SEMICOLON       reduce using rule 12 (statement -> empty .)
+
+
+state 47
+
+    (8) statements -> statements COMMA statement . NL
+
+    NL              shift and go to state 70
+
+
+state 48
+
+    (13) objective -> SENSE expression . NL
+    (14) objective -> SENSE expression . NL SUBJECT TO NL
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    NL              shift and go to state 71
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
+
+
+state 49
 
     (1) program -> statements objective statements .
     (7) statements -> statements . SEMICOLON statement NL
     (8) statements -> statements . COMMA statement NL
 
     $end            reduce using rule 1 (program -> statements objective statements .)
-    SEMICOLON       shift and go to state 15
-    COMMA           shift and go to state 16
+    SEMICOLON       shift and go to state 17
+    COMMA           shift and go to state 18
 
 
-state 35
+state 50
 
-    (20) arraylist -> arraylist array .
+    (17) create -> DUAL VARIABLE ID .
 
-    ID              reduce using rule 20 (arraylist -> arraylist array .)
-    NL              reduce using rule 20 (arraylist -> arraylist array .)
-    SEMICOLON       reduce using rule 20 (arraylist -> arraylist array .)
-
-
-state 36
-
-    (26) idlist -> idlist ID .
-
-    ID              reduce using rule 26 (idlist -> idlist ID .)
-    NL              reduce using rule 26 (idlist -> idlist ID .)
-    SEMICOLON       reduce using rule 26 (idlist -> idlist ID .)
+    NL              reduce using rule 17 (create -> DUAL VARIABLE ID .)
+    SEMICOLON       reduce using rule 17 (create -> DUAL VARIABLE ID .)
 
 
-state 37
+state 51
 
-    (19) array -> ID LPAREN RPAREN .
+    (18) create -> DUAL VARIABLES idlist .
+    (28) idlist -> idlist . ID
 
-    ID              reduce using rule 19 (array -> ID LPAREN RPAREN .)
-    NL              reduce using rule 19 (array -> ID LPAREN RPAREN .)
-    SEMICOLON       reduce using rule 19 (array -> ID LPAREN RPAREN .)
-
-
-state 38
-
-    (24) dimlist -> INT .
-
-    RPAREN          reduce using rule 24 (dimlist -> INT .)
-    COMMA           reduce using rule 24 (dimlist -> INT .)
+    NL              reduce using rule 18 (create -> DUAL VARIABLES idlist .)
+    SEMICOLON       reduce using rule 18 (create -> DUAL VARIABLES idlist .)
+    ID              shift and go to state 72
 
 
-state 39
+state 52
 
-    (17) array -> ID LPAREN dimlist . RPAREN
-    (22) dimlist -> dimlist . COMMA ID
-    (23) dimlist -> dimlist . COMMA INT
+    (29) idlist -> ID .
 
-    RPAREN          shift and go to state 51
-    COMMA           shift and go to state 52
-
-
-state 40
-
-    (25) dimlist -> ID .
-
-    RPAREN          reduce using rule 25 (dimlist -> ID .)
-    COMMA           reduce using rule 25 (dimlist -> ID .)
+    ID              reduce using rule 29 (idlist -> ID .)
+    NL              reduce using rule 29 (idlist -> ID .)
+    SEMICOLON       reduce using rule 29 (idlist -> ID .)
 
 
-state 41
+state 53
+
+    (42) expression -> LPAREN expression . RPAREN
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    RPAREN          shift and go to state 55
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
+
+
+state 54
+
+    (35) constraint -> LPAREN constraint RPAREN .
+
+    NL              reduce using rule 35 (constraint -> LPAREN constraint RPAREN .)
+    SEMICOLON       reduce using rule 35 (constraint -> LPAREN constraint RPAREN .)
+    RPAREN          reduce using rule 35 (constraint -> LPAREN constraint RPAREN .)
+
+
+state 55
+
+    (42) expression -> LPAREN expression RPAREN .
+
+    PLUS            reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    TRANSPOSE       reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    NL              reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    SEMICOLON       reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    LOGICALEQUAL    reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    LESSTHANEQUAL   reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    GREATERTHANEQUAL reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    LESSTHAN        reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+    GREATERTHAN     reduce using rule 42 (expression -> LPAREN expression RPAREN .)
+
+
+state 56
+
+    (19) array -> ID LPAREN . dimlist RPAREN
+    (21) array -> ID LPAREN . RPAREN
+    (24) dimlist -> . dimlist COMMA ID
+    (25) dimlist -> . dimlist COMMA INT
+    (26) dimlist -> . INT
+    (27) dimlist -> . ID
+
+    RPAREN          shift and go to state 73
+    INT             shift and go to state 74
+    ID              shift and go to state 76
+
+    dimlist                        shift and go to state 75
+
+state 57
+
+    (36) dual_constraint -> ID COLON constraint .
+
+    NL              reduce using rule 36 (dual_constraint -> ID COLON constraint .)
+    SEMICOLON       reduce using rule 36 (dual_constraint -> ID COLON constraint .)
+
+
+state 58
+
+    (39) expression -> expression DIVIDE INT .
+
+    PLUS            reduce using rule 39 (expression -> expression DIVIDE INT .)
+    MINUS           reduce using rule 39 (expression -> expression DIVIDE INT .)
+    DIVIDE          reduce using rule 39 (expression -> expression DIVIDE INT .)
+    TIMES           reduce using rule 39 (expression -> expression DIVIDE INT .)
+    TRANSPOSE       reduce using rule 39 (expression -> expression DIVIDE INT .)
+    NL              reduce using rule 39 (expression -> expression DIVIDE INT .)
+    SEMICOLON       reduce using rule 39 (expression -> expression DIVIDE INT .)
+    RPAREN          reduce using rule 39 (expression -> expression DIVIDE INT .)
+    LOGICALEQUAL    reduce using rule 39 (expression -> expression DIVIDE INT .)
+    LESSTHANEQUAL   reduce using rule 39 (expression -> expression DIVIDE INT .)
+    GREATERTHANEQUAL reduce using rule 39 (expression -> expression DIVIDE INT .)
+    LESSTHAN        reduce using rule 39 (expression -> expression DIVIDE INT .)
+    GREATERTHAN     reduce using rule 39 (expression -> expression DIVIDE INT .)
+
+
+state 59
+
+    (40) expression -> expression DIVIDE FLOAT .
+
+    PLUS            reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    MINUS           reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    DIVIDE          reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    TIMES           reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    TRANSPOSE       reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    NL              reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    SEMICOLON       reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    RPAREN          reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    LOGICALEQUAL    reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    LESSTHANEQUAL   reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    GREATERTHANEQUAL reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    LESSTHAN        reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+    GREATERTHAN     reduce using rule 40 (expression -> expression DIVIDE FLOAT .)
+
+
+state 60
+
+    (31) constraint -> expression LESSTHANEQUAL expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    NL              reduce using rule 31 (constraint -> expression LESSTHANEQUAL expression .)
+    SEMICOLON       reduce using rule 31 (constraint -> expression LESSTHANEQUAL expression .)
+    RPAREN          reduce using rule 31 (constraint -> expression LESSTHANEQUAL expression .)
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
+
+
+state 61
+
+    (32) constraint -> expression GREATERTHANEQUAL expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    NL              reduce using rule 32 (constraint -> expression GREATERTHANEQUAL expression .)
+    SEMICOLON       reduce using rule 32 (constraint -> expression GREATERTHANEQUAL expression .)
+    RPAREN          reduce using rule 32 (constraint -> expression GREATERTHANEQUAL expression .)
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
+
+
+state 62
+
+    (41) expression -> expression TIMES expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    PLUS            reduce using rule 41 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 41 (expression -> expression TIMES expression .)
+    DIVIDE          reduce using rule 41 (expression -> expression TIMES expression .)
+    TIMES           reduce using rule 41 (expression -> expression TIMES expression .)
+    TRANSPOSE       reduce using rule 41 (expression -> expression TIMES expression .)
+    NL              reduce using rule 41 (expression -> expression TIMES expression .)
+    SEMICOLON       reduce using rule 41 (expression -> expression TIMES expression .)
+    RPAREN          reduce using rule 41 (expression -> expression TIMES expression .)
+    LOGICALEQUAL    reduce using rule 41 (expression -> expression TIMES expression .)
+    LESSTHANEQUAL   reduce using rule 41 (expression -> expression TIMES expression .)
+    GREATERTHANEQUAL reduce using rule 41 (expression -> expression TIMES expression .)
+    LESSTHAN        reduce using rule 41 (expression -> expression TIMES expression .)
+    GREATERTHAN     reduce using rule 41 (expression -> expression TIMES expression .)
+
+  ! PLUS            [ shift and go to state 41 ]
+  ! MINUS           [ shift and go to state 42 ]
+  ! DIVIDE          [ shift and go to state 33 ]
+  ! TIMES           [ shift and go to state 37 ]
+  ! TRANSPOSE       [ shift and go to state 35 ]
+
+
+state 63
+
+    (33) constraint -> expression LESSTHAN expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    NL              reduce using rule 33 (constraint -> expression LESSTHAN expression .)
+    SEMICOLON       reduce using rule 33 (constraint -> expression LESSTHAN expression .)
+    RPAREN          reduce using rule 33 (constraint -> expression LESSTHAN expression .)
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
+
+
+state 64
+
+    (34) constraint -> expression GREATERTHAN expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    NL              reduce using rule 34 (constraint -> expression GREATERTHAN expression .)
+    SEMICOLON       reduce using rule 34 (constraint -> expression GREATERTHAN expression .)
+    RPAREN          reduce using rule 34 (constraint -> expression GREATERTHAN expression .)
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
+
+
+state 65
+
+    (30) constraint -> expression LOGICALEQUAL expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    NL              reduce using rule 30 (constraint -> expression LOGICALEQUAL expression .)
+    SEMICOLON       reduce using rule 30 (constraint -> expression LOGICALEQUAL expression .)
+    RPAREN          reduce using rule 30 (constraint -> expression LOGICALEQUAL expression .)
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 42
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+    TRANSPOSE       shift and go to state 35
+
+
+state 66
+
+    (37) expression -> expression PLUS expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    PLUS            reduce using rule 37 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 37 (expression -> expression PLUS expression .)
+    TRANSPOSE       reduce using rule 37 (expression -> expression PLUS expression .)
+    NL              reduce using rule 37 (expression -> expression PLUS expression .)
+    SEMICOLON       reduce using rule 37 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 37 (expression -> expression PLUS expression .)
+    LOGICALEQUAL    reduce using rule 37 (expression -> expression PLUS expression .)
+    LESSTHANEQUAL   reduce using rule 37 (expression -> expression PLUS expression .)
+    GREATERTHANEQUAL reduce using rule 37 (expression -> expression PLUS expression .)
+    LESSTHAN        reduce using rule 37 (expression -> expression PLUS expression .)
+    GREATERTHAN     reduce using rule 37 (expression -> expression PLUS expression .)
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+
+  ! DIVIDE          [ reduce using rule 37 (expression -> expression PLUS expression .) ]
+  ! TIMES           [ reduce using rule 37 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 41 ]
+  ! MINUS           [ shift and go to state 42 ]
+  ! TRANSPOSE       [ shift and go to state 35 ]
+
+
+state 67
+
+    (38) expression -> expression MINUS expression .
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . DIVIDE INT
+    (40) expression -> expression . DIVIDE FLOAT
+    (41) expression -> expression . TIMES expression
+    (44) expression -> expression . TRANSPOSE
+
+    PLUS            reduce using rule 38 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 38 (expression -> expression MINUS expression .)
+    TRANSPOSE       reduce using rule 38 (expression -> expression MINUS expression .)
+    NL              reduce using rule 38 (expression -> expression MINUS expression .)
+    SEMICOLON       reduce using rule 38 (expression -> expression MINUS expression .)
+    RPAREN          reduce using rule 38 (expression -> expression MINUS expression .)
+    LOGICALEQUAL    reduce using rule 38 (expression -> expression MINUS expression .)
+    LESSTHANEQUAL   reduce using rule 38 (expression -> expression MINUS expression .)
+    GREATERTHANEQUAL reduce using rule 38 (expression -> expression MINUS expression .)
+    LESSTHAN        reduce using rule 38 (expression -> expression MINUS expression .)
+    GREATERTHAN     reduce using rule 38 (expression -> expression MINUS expression .)
+    DIVIDE          shift and go to state 33
+    TIMES           shift and go to state 37
+
+  ! DIVIDE          [ reduce using rule 38 (expression -> expression MINUS expression .) ]
+  ! TIMES           [ reduce using rule 38 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 41 ]
+  ! MINUS           [ shift and go to state 42 ]
+  ! TRANSPOSE       [ shift and go to state 35 ]
+
+
+state 68
+
+    (22) arraylist -> arraylist array .
+
+    ID              reduce using rule 22 (arraylist -> arraylist array .)
+    NL              reduce using rule 22 (arraylist -> arraylist array .)
+    SEMICOLON       reduce using rule 22 (arraylist -> arraylist array .)
+
+
+state 69
 
     (7) statements -> statements SEMICOLON statement NL .
 
     SEMICOLON       reduce using rule 7 (statements -> statements SEMICOLON statement NL .)
     COMMA           reduce using rule 7 (statements -> statements SEMICOLON statement NL .)
-    $end            reduce using rule 7 (statements -> statements SEMICOLON statement NL .)
     SENSE           reduce using rule 7 (statements -> statements SEMICOLON statement NL .)
+    $end            reduce using rule 7 (statements -> statements SEMICOLON statement NL .)
 
 
-state 42
+state 70
 
     (8) statements -> statements COMMA statement NL .
 
     SEMICOLON       reduce using rule 8 (statements -> statements COMMA statement NL .)
     COMMA           reduce using rule 8 (statements -> statements COMMA statement NL .)
-    $end            reduce using rule 8 (statements -> statements COMMA statement NL .)
     SENSE           reduce using rule 8 (statements -> statements COMMA statement NL .)
+    $end            reduce using rule 8 (statements -> statements COMMA statement NL .)
 
 
-state 43
+state 71
 
-    (33) expression -> LPAREN expression . RPAREN
-    (28) expression -> expression . PLUS expression
-    (29) expression -> expression . MINUS expression
-    (30) expression -> expression . DIVIDE INT
-    (31) expression -> expression . DIVIDE FLOAT
-    (32) expression -> expression . TIMES expression
-    (35) expression -> expression . TRANSPOSE
-
-    RPAREN          shift and go to state 53
-    PLUS            shift and go to state 48
-    MINUS           shift and go to state 49
-    DIVIDE          shift and go to state 45
-    TIMES           shift and go to state 47
-    TRANSPOSE       shift and go to state 46
-
-
-state 44
-
-    (11) objective -> SENSE expression NL .
-    (12) objective -> SENSE expression NL . SUBJECT TO NL
-
-    VARIABLE        reduce using rule 11 (objective -> SENSE expression NL .)
-    VARIABLES       reduce using rule 11 (objective -> SENSE expression NL .)
-    DUAL            reduce using rule 11 (objective -> SENSE expression NL .)
-    NL              reduce using rule 11 (objective -> SENSE expression NL .)
-    SEMICOLON       reduce using rule 11 (objective -> SENSE expression NL .)
-    $end            reduce using rule 11 (objective -> SENSE expression NL .)
-    SUBJECT         shift and go to state 54
-
-
-state 45
-
-    (30) expression -> expression DIVIDE . INT
-    (31) expression -> expression DIVIDE . FLOAT
-
-    INT             shift and go to state 55
-    FLOAT           shift and go to state 56
-
-
-state 46
-
-    (35) expression -> expression TRANSPOSE .
-
-    PLUS            reduce using rule 35 (expression -> expression TRANSPOSE .)
-    MINUS           reduce using rule 35 (expression -> expression TRANSPOSE .)
-    DIVIDE          reduce using rule 35 (expression -> expression TRANSPOSE .)
-    TIMES           reduce using rule 35 (expression -> expression TRANSPOSE .)
-    TRANSPOSE       reduce using rule 35 (expression -> expression TRANSPOSE .)
-    NL              reduce using rule 35 (expression -> expression TRANSPOSE .)
-    RPAREN          reduce using rule 35 (expression -> expression TRANSPOSE .)
-
-
-state 47
-
-    (32) expression -> expression TIMES . expression
-    (28) expression -> . expression PLUS expression
-    (29) expression -> . expression MINUS expression
-    (30) expression -> . expression DIVIDE INT
-    (31) expression -> . expression DIVIDE FLOAT
-    (32) expression -> . expression TIMES expression
-    (33) expression -> . LPAREN expression RPAREN
-    (34) expression -> . MINUS expression
-    (35) expression -> . expression TRANSPOSE
-    (36) expression -> . FLOAT
-    (37) expression -> . INT
-    (38) expression -> . ID
+    (13) objective -> SENSE expression NL .
+    (14) objective -> SENSE expression NL . SUBJECT TO NL
 
-    LPAREN          shift and go to state 30
-    MINUS           shift and go to state 33
-    FLOAT           shift and go to state 29
-    INT             shift and go to state 28
-    ID              shift and go to state 31
+    VARIABLE        reduce using rule 13 (objective -> SENSE expression NL .)
+    VARIABLES       reduce using rule 13 (objective -> SENSE expression NL .)
+    DUAL            reduce using rule 13 (objective -> SENSE expression NL .)
+    LPAREN          reduce using rule 13 (objective -> SENSE expression NL .)
+    ID              reduce using rule 13 (objective -> SENSE expression NL .)
+    MINUS           reduce using rule 13 (objective -> SENSE expression NL .)
+    FLOAT           reduce using rule 13 (objective -> SENSE expression NL .)
+    INT             reduce using rule 13 (objective -> SENSE expression NL .)
+    NL              reduce using rule 13 (objective -> SENSE expression NL .)
+    SEMICOLON       reduce using rule 13 (objective -> SENSE expression NL .)
+    $end            reduce using rule 13 (objective -> SENSE expression NL .)
+    SUBJECT         shift and go to state 77
 
-    expression                     shift and go to state 57
 
-state 48
+state 72
 
-    (28) expression -> expression PLUS . expression
-    (28) expression -> . expression PLUS expression
-    (29) expression -> . expression MINUS expression
-    (30) expression -> . expression DIVIDE INT
-    (31) expression -> . expression DIVIDE FLOAT
-    (32) expression -> . expression TIMES expression
-    (33) expression -> . LPAREN expression RPAREN
-    (34) expression -> . MINUS expression
-    (35) expression -> . expression TRANSPOSE
-    (36) expression -> . FLOAT
-    (37) expression -> . INT
-    (38) expression -> . ID
+    (28) idlist -> idlist ID .
 
-    LPAREN          shift and go to state 30
-    MINUS           shift and go to state 33
-    FLOAT           shift and go to state 29
-    INT             shift and go to state 28
-    ID              shift and go to state 31
+    ID              reduce using rule 28 (idlist -> idlist ID .)
+    NL              reduce using rule 28 (idlist -> idlist ID .)
+    SEMICOLON       reduce using rule 28 (idlist -> idlist ID .)
 
-    expression                     shift and go to state 58
 
-state 49
+state 73
 
-    (29) expression -> expression MINUS . expression
-    (28) expression -> . expression PLUS expression
-    (29) expression -> . expression MINUS expression
-    (30) expression -> . expression DIVIDE INT
-    (31) expression -> . expression DIVIDE FLOAT
-    (32) expression -> . expression TIMES expression
-    (33) expression -> . LPAREN expression RPAREN
-    (34) expression -> . MINUS expression
-    (35) expression -> . expression TRANSPOSE
-    (36) expression -> . FLOAT
-    (37) expression -> . INT
-    (38) expression -> . ID
+    (21) array -> ID LPAREN RPAREN .
 
-    LPAREN          shift and go to state 30
-    MINUS           shift and go to state 33
-    FLOAT           shift and go to state 29
-    INT             shift and go to state 28
-    ID              shift and go to state 31
+    NL              reduce using rule 21 (array -> ID LPAREN RPAREN .)
+    SEMICOLON       reduce using rule 21 (array -> ID LPAREN RPAREN .)
+    ID              reduce using rule 21 (array -> ID LPAREN RPAREN .)
 
-    expression                     shift and go to state 59
 
-state 50
+state 74
 
-    (34) expression -> MINUS expression .
-    (28) expression -> expression . PLUS expression
-    (29) expression -> expression . MINUS expression
-    (30) expression -> expression . DIVIDE INT
-    (31) expression -> expression . DIVIDE FLOAT
-    (32) expression -> expression . TIMES expression
-    (35) expression -> expression . TRANSPOSE
+    (26) dimlist -> INT .
 
-    PLUS            reduce using rule 34 (expression -> MINUS expression .)
-    MINUS           reduce using rule 34 (expression -> MINUS expression .)
-    DIVIDE          reduce using rule 34 (expression -> MINUS expression .)
-    TIMES           reduce using rule 34 (expression -> MINUS expression .)
-    TRANSPOSE       reduce using rule 34 (expression -> MINUS expression .)
-    NL              reduce using rule 34 (expression -> MINUS expression .)
-    RPAREN          reduce using rule 34 (expression -> MINUS expression .)
+    RPAREN          reduce using rule 26 (dimlist -> INT .)
+    COMMA           reduce using rule 26 (dimlist -> INT .)
 
-  ! PLUS            [ shift and go to state 48 ]
-  ! MINUS           [ shift and go to state 49 ]
-  ! DIVIDE          [ shift and go to state 45 ]
-  ! TIMES           [ shift and go to state 47 ]
-  ! TRANSPOSE       [ shift and go to state 46 ]
 
+state 75
 
-state 51
+    (19) array -> ID LPAREN dimlist . RPAREN
+    (24) dimlist -> dimlist . COMMA ID
+    (25) dimlist -> dimlist . COMMA INT
 
-    (17) array -> ID LPAREN dimlist RPAREN .
+    RPAREN          shift and go to state 78
+    COMMA           shift and go to state 79
 
-    ID              reduce using rule 17 (array -> ID LPAREN dimlist RPAREN .)
-    NL              reduce using rule 17 (array -> ID LPAREN dimlist RPAREN .)
-    SEMICOLON       reduce using rule 17 (array -> ID LPAREN dimlist RPAREN .)
 
+state 76
 
-state 52
+    (27) dimlist -> ID .
 
-    (22) dimlist -> dimlist COMMA . ID
-    (23) dimlist -> dimlist COMMA . INT
+    RPAREN          reduce using rule 27 (dimlist -> ID .)
+    COMMA           reduce using rule 27 (dimlist -> ID .)
 
-    ID              shift and go to state 61
-    INT             shift and go to state 60
 
+state 77
 
-state 53
+    (14) objective -> SENSE expression NL SUBJECT . TO NL
 
-    (33) expression -> LPAREN expression RPAREN .
+    TO              shift and go to state 80
 
-    PLUS            reduce using rule 33 (expression -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 33 (expression -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 33 (expression -> LPAREN expression RPAREN .)
-    TIMES           reduce using rule 33 (expression -> LPAREN expression RPAREN .)
-    TRANSPOSE       reduce using rule 33 (expression -> LPAREN expression RPAREN .)
-    NL              reduce using rule 33 (expression -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 33 (expression -> LPAREN expression RPAREN .)
 
+state 78
 
-state 54
+    (19) array -> ID LPAREN dimlist RPAREN .
 
-    (12) objective -> SENSE expression NL SUBJECT . TO NL
+    NL              reduce using rule 19 (array -> ID LPAREN dimlist RPAREN .)
+    SEMICOLON       reduce using rule 19 (array -> ID LPAREN dimlist RPAREN .)
+    ID              reduce using rule 19 (array -> ID LPAREN dimlist RPAREN .)
 
-    TO              shift and go to state 62
 
+state 79
 
-state 55
+    (24) dimlist -> dimlist COMMA . ID
+    (25) dimlist -> dimlist COMMA . INT
 
-    (30) expression -> expression DIVIDE INT .
+    ID              shift and go to state 82
+    INT             shift and go to state 81
 
-    PLUS            reduce using rule 30 (expression -> expression DIVIDE INT .)
-    MINUS           reduce using rule 30 (expression -> expression DIVIDE INT .)
-    DIVIDE          reduce using rule 30 (expression -> expression DIVIDE INT .)
-    TIMES           reduce using rule 30 (expression -> expression DIVIDE INT .)
-    TRANSPOSE       reduce using rule 30 (expression -> expression DIVIDE INT .)
-    NL              reduce using rule 30 (expression -> expression DIVIDE INT .)
-    RPAREN          reduce using rule 30 (expression -> expression DIVIDE INT .)
 
+state 80
 
-state 56
+    (14) objective -> SENSE expression NL SUBJECT TO . NL
 
-    (31) expression -> expression DIVIDE FLOAT .
+    NL              shift and go to state 83
 
-    PLUS            reduce using rule 31 (expression -> expression DIVIDE FLOAT .)
-    MINUS           reduce using rule 31 (expression -> expression DIVIDE FLOAT .)
-    DIVIDE          reduce using rule 31 (expression -> expression DIVIDE FLOAT .)
-    TIMES           reduce using rule 31 (expression -> expression DIVIDE FLOAT .)
-    TRANSPOSE       reduce using rule 31 (expression -> expression DIVIDE FLOAT .)
-    NL              reduce using rule 31 (expression -> expression DIVIDE FLOAT .)
-    RPAREN          reduce using rule 31 (expression -> expression DIVIDE FLOAT .)
 
+state 81
 
-state 57
+    (25) dimlist -> dimlist COMMA INT .
 
-    (32) expression -> expression TIMES expression .
-    (28) expression -> expression . PLUS expression
-    (29) expression -> expression . MINUS expression
-    (30) expression -> expression . DIVIDE INT
-    (31) expression -> expression . DIVIDE FLOAT
-    (32) expression -> expression . TIMES expression
-    (35) expression -> expression . TRANSPOSE
+    RPAREN          reduce using rule 25 (dimlist -> dimlist COMMA INT .)
+    COMMA           reduce using rule 25 (dimlist -> dimlist COMMA INT .)
 
-    PLUS            reduce using rule 32 (expression -> expression TIMES expression .)
-    MINUS           reduce using rule 32 (expression -> expression TIMES expression .)
-    DIVIDE          reduce using rule 32 (expression -> expression TIMES expression .)
-    TIMES           reduce using rule 32 (expression -> expression TIMES expression .)
-    TRANSPOSE       reduce using rule 32 (expression -> expression TIMES expression .)
-    NL              reduce using rule 32 (expression -> expression TIMES expression .)
-    RPAREN          reduce using rule 32 (expression -> expression TIMES expression .)
 
-  ! PLUS            [ shift and go to state 48 ]
-  ! MINUS           [ shift and go to state 49 ]
-  ! DIVIDE          [ shift and go to state 45 ]
-  ! TIMES           [ shift and go to state 47 ]
-  ! TRANSPOSE       [ shift and go to state 46 ]
+state 82
 
+    (24) dimlist -> dimlist COMMA ID .
 
-state 58
+    RPAREN          reduce using rule 24 (dimlist -> dimlist COMMA ID .)
+    COMMA           reduce using rule 24 (dimlist -> dimlist COMMA ID .)
 
-    (28) expression -> expression PLUS expression .
-    (28) expression -> expression . PLUS expression
-    (29) expression -> expression . MINUS expression
-    (30) expression -> expression . DIVIDE INT
-    (31) expression -> expression . DIVIDE FLOAT
-    (32) expression -> expression . TIMES expression
-    (35) expression -> expression . TRANSPOSE
 
-    PLUS            reduce using rule 28 (expression -> expression PLUS expression .)
-    MINUS           reduce using rule 28 (expression -> expression PLUS expression .)
-    TRANSPOSE       reduce using rule 28 (expression -> expression PLUS expression .)
-    NL              reduce using rule 28 (expression -> expression PLUS expression .)
-    RPAREN          reduce using rule 28 (expression -> expression PLUS expression .)
-    DIVIDE          shift and go to state 45
-    TIMES           shift and go to state 47
+state 83
 
-  ! DIVIDE          [ reduce using rule 28 (expression -> expression PLUS expression .) ]
-  ! TIMES           [ reduce using rule 28 (expression -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 48 ]
-  ! MINUS           [ shift and go to state 49 ]
-  ! TRANSPOSE       [ shift and go to state 46 ]
+    (14) objective -> SENSE expression NL SUBJECT TO NL .
 
-
-state 59
-
-    (29) expression -> expression MINUS expression .
-    (28) expression -> expression . PLUS expression
-    (29) expression -> expression . MINUS expression
-    (30) expression -> expression . DIVIDE INT
-    (31) expression -> expression . DIVIDE FLOAT
-    (32) expression -> expression . TIMES expression
-    (35) expression -> expression . TRANSPOSE
-
-    PLUS            reduce using rule 29 (expression -> expression MINUS expression .)
-    MINUS           reduce using rule 29 (expression -> expression MINUS expression .)
-    TRANSPOSE       reduce using rule 29 (expression -> expression MINUS expression .)
-    NL              reduce using rule 29 (expression -> expression MINUS expression .)
-    RPAREN          reduce using rule 29 (expression -> expression MINUS expression .)
-    DIVIDE          shift and go to state 45
-    TIMES           shift and go to state 47
-
-  ! DIVIDE          [ reduce using rule 29 (expression -> expression MINUS expression .) ]
-  ! TIMES           [ reduce using rule 29 (expression -> expression MINUS expression .) ]
-  ! PLUS            [ shift and go to state 48 ]
-  ! MINUS           [ shift and go to state 49 ]
-  ! TRANSPOSE       [ shift and go to state 46 ]
-
-
-state 60
-
-    (23) dimlist -> dimlist COMMA INT .
-
-    RPAREN          reduce using rule 23 (dimlist -> dimlist COMMA INT .)
-    COMMA           reduce using rule 23 (dimlist -> dimlist COMMA INT .)
-
-
-state 61
-
-    (22) dimlist -> dimlist COMMA ID .
-
-    RPAREN          reduce using rule 22 (dimlist -> dimlist COMMA ID .)
-    COMMA           reduce using rule 22 (dimlist -> dimlist COMMA ID .)
-
-
-state 62
-
-    (12) objective -> SENSE expression NL SUBJECT TO . NL
-
-    NL              shift and go to state 63
-
-
-state 63
-
-    (12) objective -> SENSE expression NL SUBJECT TO NL .
-
-    VARIABLE        reduce using rule 12 (objective -> SENSE expression NL SUBJECT TO NL .)
-    VARIABLES       reduce using rule 12 (objective -> SENSE expression NL SUBJECT TO NL .)
-    DUAL            reduce using rule 12 (objective -> SENSE expression NL SUBJECT TO NL .)
-    NL              reduce using rule 12 (objective -> SENSE expression NL SUBJECT TO NL .)
-    SEMICOLON       reduce using rule 12 (objective -> SENSE expression NL SUBJECT TO NL .)
-    $end            reduce using rule 12 (objective -> SENSE expression NL SUBJECT TO NL .)
+    VARIABLE        reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    VARIABLES       reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    DUAL            reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    LPAREN          reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    ID              reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    MINUS           reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    FLOAT           reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    INT             reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    NL              reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    SEMICOLON       reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
+    $end            reduce using rule 14 (objective -> SENSE expression NL SUBJECT TO NL .)
 
